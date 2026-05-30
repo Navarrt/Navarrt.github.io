@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Eduardo Navarrete — Data Scientist JR</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400;500&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --teal: #1D9E75;
+      --teal-light: #5DCAA5;
+      --navy: #0D1F2D;
+      --navy-mid: #1B3A52;
+      --navy-light: #2A5470;
+      --white: #F0F4FA;
+      --gray: #8899AA;
+      --card-bg: #111E2A;
+      --border: rgba(29,158,117,0.25);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--navy);
+      color: var(--white);
+      font-family: 'Outfit', sans-serif;
+      font-weight: 300;
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 18px 60px;
+      background: rgba(13,31,45,0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo {
+      font-family: 'DM Mono', monospace;
+      font-size: 13px; color: var(--teal); letter-spacing: 2px;
+    }
+    .nav-links { display: flex; gap: 36px; }
+    .nav-links a {
+      color: var(--gray); text-decoration: none;
+      font-size: 13px; letter-spacing: 1px; font-family: 'DM Mono', monospace;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--teal-light); }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column; justify-content: center;
+      padding: 120px 60px 80px;
+      position: relative; overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; top: -200px; right: -200px;
+      width: 700px; height: 700px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(29,158,117,0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero::after {
+      content: '';
+      position: absolute; bottom: -100px; left: -100px;
+      width: 500px; height: 500px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(42,84,112,0.15) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-tag {
+      font-family: 'DM Mono', monospace;
+      font-size: 12px; color: var(--teal); letter-spacing: 3px;
+      margin-bottom: 24px;
+      animation: fadeUp 0.6s ease both;
+    }
+    .hero-name {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(48px, 7vw, 88px);
+      line-height: 1.05;
+      color: var(--white);
+      animation: fadeUp 0.6s ease 0.1s both;
+    }
+    .hero-name em {
+      font-style: italic; color: var(--teal-light);
+    }
+    .hero-subtitle {
+      font-size: 18px; color: var(--gray);
+      margin-top: 24px; max-width: 560px; line-height: 1.7;
+      animation: fadeUp 0.6s ease 0.2s both;
+    }
+    .hero-cta {
+      display: flex; gap: 16px; margin-top: 48px; flex-wrap: wrap;
+      animation: fadeUp 0.6s ease 0.3s both;
+    }
+    .btn-primary {
+      padding: 14px 32px;
+      background: var(--teal); color: var(--navy);
+      text-decoration: none; font-weight: 600; font-size: 14px;
+      letter-spacing: 0.5px; border-radius: 4px;
+      transition: all 0.2s;
+    }
+    .btn-primary:hover { background: var(--teal-light); transform: translateY(-2px); }
+    .btn-outline {
+      padding: 14px 32px;
+      border: 1px solid var(--border); color: var(--teal-light);
+      text-decoration: none; font-size: 14px; letter-spacing: 0.5px;
+      border-radius: 4px; transition: all 0.2s;
+    }
+    .btn-outline:hover { border-color: var(--teal); background: rgba(29,158,117,0.08); transform: translateY(-2px); }
+
+    /* ── GRID DECORATION ── */
+    .grid-lines {
+      position: absolute; inset: 0; pointer-events: none;
+      background-image:
+        linear-gradient(rgba(29,158,117,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(29,158,117,0.04) 1px, transparent 1px);
+      background-size: 60px 60px;
+    }
+
+    /* ── SECTIONS ── */
+    section { padding: 100px 60px; max-width: 1100px; margin: 0 auto; }
+    .section-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px; color: var(--teal); letter-spacing: 3px;
+      margin-bottom: 12px; text-transform: uppercase;
+    }
+    .section-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(32px, 4vw, 48px);
+      color: var(--white); margin-bottom: 48px;
+    }
+
+    /* ── ABOUT ── */
+    .about-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 60px;
+      align-items: start;
+    }
+    .about-text { font-size: 16px; color: var(--gray); line-height: 1.8; }
+    .about-text p { margin-bottom: 20px; }
+    .about-text strong { color: var(--teal-light); font-weight: 500; }
+    .skills-grid { display: flex; flex-direction: column; gap: 16px; }
+    .skill-group { }
+    .skill-group-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px; color: var(--teal); letter-spacing: 2px;
+      margin-bottom: 8px; text-transform: uppercase;
+    }
+    .skill-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+    .skill-tag {
+      padding: 5px 12px;
+      background: rgba(29,158,117,0.1);
+      border: 1px solid rgba(29,158,117,0.25);
+      color: var(--teal-light); font-size: 12px;
+      border-radius: 20px; font-family: 'DM Mono', monospace;
+    }
+
+    /* ── PROJECTS ── */
+    .projects-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
+    .project-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px; padding: 36px;
+      transition: all 0.3s; position: relative; overflow: hidden;
+    }
+    .project-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      background: linear-gradient(90deg, var(--teal), var(--teal-light));
+      transform: scaleX(0); transform-origin: left;
+      transition: transform 0.3s;
+    }
+    .project-card:hover { border-color: var(--teal); transform: translateY(-4px); }
+    .project-card:hover::before { transform: scaleX(1); }
+    .project-number {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px; color: var(--teal); letter-spacing: 2px;
+      margin-bottom: 16px;
+    }
+    .project-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: 22px; color: var(--white); margin-bottom: 16px;
+    }
+    .project-desc {
+      font-size: 14px; color: var(--gray); line-height: 1.7;
+      margin-bottom: 24px;
+    }
+    .project-tech { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 28px; }
+    .tech-tag {
+      padding: 4px 10px;
+      background: rgba(42,84,112,0.4);
+      border: 1px solid rgba(93,202,165,0.2);
+      color: var(--gray); font-size: 11px;
+      border-radius: 3px; font-family: 'DM Mono', monospace;
+    }
+    .project-link {
+      display: inline-flex; align-items: center; gap: 8px;
+      color: var(--teal); text-decoration: none;
+      font-size: 13px; font-family: 'DM Mono', monospace;
+      letter-spacing: 1px; transition: color 0.2s;
+    }
+    .project-link:hover { color: var(--teal-light); }
+    .project-link::after { content: '→'; }
+
+    /* ── EXPERIENCE ── */
+    .experience-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px; padding: 40px;
+      position: relative;
+    }
+    .exp-header {
+      display: flex; justify-content: space-between;
+      align-items: flex-start; margin-bottom: 8px;
+      flex-wrap: wrap; gap: 12px;
+    }
+    .exp-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: 24px; color: var(--white);
+    }
+    .exp-dates {
+      font-family: 'DM Mono', monospace;
+      font-size: 12px; color: var(--teal);
+      background: rgba(29,158,117,0.1);
+      border: 1px solid var(--border);
+      padding: 4px 12px; border-radius: 20px;
+    }
+    .exp-company {
+      font-size: 14px; color: var(--teal-light);
+      margin-bottom: 24px; font-family: 'DM Mono', monospace;
+      letter-spacing: 1px;
+    }
+    .exp-bullets { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+    .exp-bullets li {
+      display: flex; gap: 12px;
+      font-size: 14px; color: var(--gray); line-height: 1.7;
+    }
+    .exp-bullets li::before {
+      content: '▸'; color: var(--teal); flex-shrink: 0; margin-top: 1px;
+    }
+
+    /* ── CONTACT ── */
+    .contact-section {
+      text-align: center; padding: 100px 60px;
+      border-top: 1px solid var(--border);
+    }
+    .contact-grid {
+      display: flex; justify-content: center;
+      gap: 24px; margin-top: 48px; flex-wrap: wrap;
+    }
+    .contact-card {
+      display: flex; flex-direction: column; align-items: center; gap: 8px;
+      padding: 28px 36px;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px; text-decoration: none;
+      transition: all 0.2s; min-width: 160px;
+    }
+    .contact-card:hover { border-color: var(--teal); transform: translateY(-3px); }
+    .contact-card-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px; color: var(--teal); letter-spacing: 2px;
+    }
+    .contact-card-value { font-size: 14px; color: var(--white); }
+
+    /* ── FOOTER ── */
+    footer {
+      text-align: center; padding: 32px;
+      border-top: 1px solid var(--border);
+      font-family: 'DM Mono', monospace;
+      font-size: 11px; color: var(--gray); letter-spacing: 1px;
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      nav { padding: 16px 24px; }
+      .nav-links { gap: 20px; }
+      .hero { padding: 100px 24px 60px; }
+      section { padding: 60px 24px; }
+      .about-grid { grid-template-columns: 1fr; gap: 40px; }
+      .projects-grid { grid-template-columns: 1fr; }
+      .contact-section { padding: 60px 24px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="grid-lines"></div>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-logo">EN // PORTFOLIO</div>
+    <div class="nav-links">
+      <a href="#about">About</a>
+      <a href="#projects">Projects</a>
+      <a href="#experience">Experience</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-tag">// DATA SCIENTIST JR &nbsp;·&nbsp; PRODUCTION SUPPORT SPECIALIST</div>
+    <h1 class="hero-name">Eduardo<br><em>Navarrete</em></h1>
+    <p class="hero-subtitle">
+      Turning raw data into actionable insights. 3+ years in production support for financial institutions, now building expertise in Python, Machine Learning, and data-driven decision making.
+    </p>
+    <div class="hero-cta">
+      <a href="#projects" class="btn-primary">View Projects</a>
+      <a href="#contact" class="btn-outline">Get in Touch</a>
+    </div>
+  </div>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="section-label">// 01. ABOUT</div>
+    <h2 class="section-title">Who I am</h2>
+    <div class="about-grid">
+      <div class="about-text">
+        <p>
+          I'm a technology professional with <strong>3+ years of experience</strong> as an L2 Production Support Specialist, supporting critical banking platforms for institutions like <strong>Citibank and Valley Bank</strong> through Tata Consultancy Services.
+        </p>
+        <p>
+          I thrive in high-pressure environments — diagnosing complex incidents, preventing outages, and making sure critical systems keep running smoothly across multi-cloud infrastructure (AWS, Azure).
+        </p>
+        <p>
+          Currently expanding into <strong>Data Science</strong>, combining my technical background with Python, SQL, and Machine Learning to move from keeping systems alive to extracting value from the data they generate.
+        </p>
+      </div>
+      <div class="skills-grid">
+        <div class="skill-group">
+          <div class="skill-group-label">Data & Analytics</div>
+          <div class="skill-tags">
+            <span class="skill-tag">Python</span>
+            <span class="skill-tag">pandas</span>
+            <span class="skill-tag">NumPy</span>
+            <span class="skill-tag">scikit-learn</span>
+            <span class="skill-tag">SQL</span>
+            <span class="skill-tag">Power BI</span>
+            <span class="skill-tag">Streamlit</span>
+          </div>
+        </div>
+        <div class="skill-group">
+          <div class="skill-group-label">Production Support</div>
+          <div class="skill-tags">
+            <span class="skill-tag">Splunk</span>
+            <span class="skill-tag">AppDynamics</span>
+            <span class="skill-tag">ServiceNow</span>
+            <span class="skill-tag">Jira</span>
+            <span class="skill-tag">SLA Management</span>
+            <span class="skill-tag">Change Management</span>
+          </div>
+        </div>
+        <div class="skill-group">
+          <div class="skill-group-label">Infrastructure</div>
+          <div class="skill-tags">
+            <span class="skill-tag">AWS</span>
+            <span class="skill-tag">Azure</span>
+            <span class="skill-tag">Linux</span>
+            <span class="skill-tag">Windows Server</span>
+            <span class="skill-tag">Active Directory</span>
+            <span class="skill-tag">RESTful APIs</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section id="projects" style="max-width:1100px;margin:0 auto;padding:100px 60px;">
+    <div class="section-label">// 02. PROJECTS</div>
+    <h2 class="section-title">What I've built</h2>
+    <div class="projects-grid">
+
+      <div class="project-card">
+        <div class="project-number">PROJECT 01</div>
+        <h3 class="project-title">Car Sales Data Analysis Web App</h3>
+        <p class="project-desc">
+          Interactive web application for exploratory data analysis of a U.S. car sales advertisement dataset. Delivers visual insights through histograms and scatter plots with an end-to-end EDA pipeline from raw data to interactive dashboard.
+        </p>
+        <div class="project-tech">
+          <span class="tech-tag">Python</span>
+          <span class="tech-tag">pandas</span>
+          <span class="tech-tag">Streamlit</span>
+          <span class="tech-tag">Plotly</span>
+          <span class="tech-tag">EDA</span>
+        </div>
+        <a href="https://github.com/Navarrt/vehicles_app" class="project-link">View on GitHub</a>
+      </div>
+
+      <div class="project-card">
+        <div class="project-number">PROJECT 02</div>
+        <h3 class="project-title">Coin Toss Probability Simulator</h3>
+        <p class="project-desc">
+          Real-time statistical simulation app that visualizes the Central Limit Theorem through coin toss experiments with up to 1,000 iterations. Implements Bernoulli distribution sampling and tracks mean value convergence dynamically.
+        </p>
+        <div class="project-tech">
+          <span class="tech-tag">Python</span>
+          <span class="tech-tag">pandas</span>
+          <span class="tech-tag">scipy.stats</span>
+          <span class="tech-tag">Streamlit</span>
+          <span class="tech-tag">Statistics</span>
+        </div>
+        <a href="https://github.com/Navarrt/streamlit_test" class="project-link">View on GitHub</a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- EXPERIENCE -->
+  <section id="experience">
+    <div class="section-label">// 03. EXPERIENCE</div>
+    <h2 class="section-title">Where I've worked</h2>
+    <div class="experience-card">
+      <div class="exp-header">
+        <h3 class="exp-title">L2 Production Support Specialist</h3>
+        <span class="exp-dates">NOV 2022 — PRESENT</span>
+      </div>
+      <div class="exp-company">TATA CONSULTANCY SERVICES &nbsp;·&nbsp; Contractor for Citibank & Valley Bank</div>
+      <ul class="exp-bullets">
+        <li>Managed provisioning, configuration, and monitoring of production environments across multi-cloud infrastructure (AWS, Azure), contributing to consistent system availability.</li>
+        <li>Diagnosed and resolved critical incidents in banking transaction pipelines through root cause analysis using Splunk and AppDynamics.</li>
+        <li>Developed and optimized SQL queries to investigate data inconsistencies across core banking systems, improving troubleshooting efficiency.</li>
+        <li>Handled 40+ monthly tickets across ServiceNow and Jira, maintaining SLA compliance and clear client communication throughout each case lifecycle.</li>
+        <li>Participated in change management activities including software upgrades and new releases, coordinating with development, network, and security teams.</li>
+        <li>Maintained comprehensive documentation of IT systems, configurations, and support procedures.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <div class="contact-section" id="contact">
+    <div class="section-label" style="text-align:center;">// 04. CONTACT</div>
+    <h2 class="section-title" style="font-family:'DM Serif Display',serif;font-size:clamp(32px,4vw,48px);color:var(--white);margin-bottom:16px;">Let's connect</h2>
+    <p style="color:var(--gray);font-size:16px;max-width:480px;margin:0 auto;line-height:1.7;">
+      Open to Data Science and Technical Support opportunities. Feel free to reach out.
+    </p>
+    <div class="contact-grid">
+      <a href="mailto:navarrt40@gmail.com" class="contact-card">
+        <span class="contact-card-label">EMAIL</span>
+        <span class="contact-card-value">navarrt40@gmail.com</span>
+      </a>
+      <a href="https://www.linkedin.com/in/eduardo-navarrete-datascientist" target="_blank" class="contact-card">
+        <span class="contact-card-label">LINKEDIN</span>
+        <span class="contact-card-value">eduardo-navarrete</span>
+      </a>
+      <a href="https://github.com/Navarrt" target="_blank" class="contact-card">
+        <span class="contact-card-label">GITHUB</span>
+        <span class="contact-card-value">github.com/Navarrt</span>
+      </a>
+    </div>
+  </div>
+
+  <footer>
+    © 2025 Eduardo Navarrete Romero &nbsp;·&nbsp; Built with GitHub Pages
+  </footer>
+
+</body>
+</html>
